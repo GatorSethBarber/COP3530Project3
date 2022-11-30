@@ -1,4 +1,5 @@
 #include "Dataset.h"
+#include <iostream>
 using namespace std;
 /*================ Main constructors =====================*/
 
@@ -47,11 +48,16 @@ Dataset::~Dataset() {
 /*============================= Accessors and Manipulators ==========================*/
 // Add in data (will need to modify this with Datapoint.h)
 
-void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu) {
+void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu)
+{
     Datapoint* newJobType = new Datapoint(SOC, NAICS, averageSalary, projectedGrowth, edu);
     jobTypes.push_back(newJobType);
 }
 
+void Dataset::addDatapoint(Datapoint* dp)
+{
+    jobTypes.push_back(dp);
+}
 /*
 void Dataset::addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
 int averageSalary, double projectedGrowth, string educationLevel) {
@@ -64,8 +70,11 @@ int averageSalary, double projectedGrowth, string educationLevel) {
 
 // May need to add in function pointer or use weights
 void Dataset::rankAll() {
-    for (int i = 0; i < jobTypes.size(); i++) {
+    for (int i = 0; i < 10; i++) {
         // Do ranking
+        // Not sure how to access the object from the vector of pointers --Angelina
+        jobTypes[i]->print();
+        //cout << jobTypes[i] << endl;
     }
 }
 

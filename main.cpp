@@ -15,7 +15,7 @@ int main() {
     Dataset main;
     readFile(main);
 
-
+    main.rankAll(); //Having issues with the rankAll() all function --Angelina
     /*
     vector<int> testVector{2, 5, 9, 1, 20, 10, 13, 15};
     // vector<int> testVector{2, 3, 9, 1};
@@ -49,7 +49,7 @@ void readFile(Dataset& main)
     count = 1; // for testing only
     if (myfile.is_open())
     {
-        while (!myfile.eof()) //!myfile.eof()
+        while (count < 10) //!myfile.eof()
         {
             vector<string> data;
             count++;
@@ -92,7 +92,7 @@ void readFile(Dataset& main)
                 edu = eduValues[data[24]];
 
             //Datapoint* myData = new Datapoint(data[2], data[4], stod(data[14]), stod(data[13]), edu);
-           
+            //main.addDatapoint(new Datapoint(data[2], data[4], stod(data[14]), stod(data[13]), edu));
             main.addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu);
             //cout << data[14] << endl;
 

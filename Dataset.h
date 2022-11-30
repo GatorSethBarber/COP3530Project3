@@ -29,6 +29,7 @@ class Dataset {
 
         // Add in data (will need to modify this with Datapoint.h)
         void addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu);
+        void addDatapoint(Datapoint* dp);
         // Add in data (will need to modify this with Datapoint.h)
         /*
         void addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 

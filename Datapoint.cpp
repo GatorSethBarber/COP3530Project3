@@ -1,5 +1,5 @@
 #include "Datapoint.h"
-
+#include<iostream>
 
 
 /**
@@ -47,6 +47,11 @@ int averageSalary, double projectedGrowth, string educationLevel) {
 }
 */
     // The default big three will be satisfactory
+
+void Datapoint::print()
+{
+    cout << industryNAICS << endl;
+}
 
 bool Datapoint::operator<(const Datapoint& other) {
     return ranking < other.ranking;
