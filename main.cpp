@@ -13,7 +13,7 @@ void readFile(Dataset& main);
 
 int main() {
     Dataset main;
-    //readFile(main);
+    readFile(main);
 
 
     /*
@@ -38,15 +38,15 @@ void readFile(Dataset& main)
     map<string, int> eduValues;
     eduValues.insert({"No formal educational credential", 0});
     eduValues.insert({"High school diploma or equivalent", 1});
-    eduValues.insert({"Postsecondary nondegree award", 1});
-    eduValues.insert({"Some college, no degree", 1});
-    eduValues.insert({"Associate's degree", 1});
-    eduValues.insert({"Bachelor's degree", 1});
-    eduValues.insert({"Master's degree", 1});
-    eduValues.insert({"Doctoral or professional degree", 1});
+    eduValues.insert({"Postsecondary nondegree award", 2});
+    eduValues.insert({"Some college no degree", 3});
+    eduValues.insert({"Associate's degree", 4});
+    eduValues.insert({"Bachelor's degree", 5});
+    eduValues.insert({"Master's degree", 6});
+    eduValues.insert({"Doctoral or professional degree", 7});
 
-    myfile.open("dataForProjectCSV.csv");
-    count = 0; // for testing only
+    myfile.open("dataForProject.csv");
+    count = 1; // for testing only
     if (myfile.is_open())
     {
         while (!myfile.eof()) //!myfile.eof()
@@ -79,9 +79,8 @@ void readFile(Dataset& main)
                 data.push_back(substr);
             }
 
-            //cout << "col1 " << row << " ";
-
-            //cout << endl;
+            //cout << "col1 " << row << endl;
+            //cout << count << endl;
             string soc = data[2];
             
             if (soc.compare("00-0000") == 0)
@@ -89,12 +88,12 @@ void readFile(Dataset& main)
                 continue;
             }
             int edu = 0;
-            if (eduValues.find(data[15]) != eduValues.end())
-                edu = eduValues[data[15]];
+            if (eduValues.find(data[24]) != eduValues.end())
+                edu = eduValues[data[24]];
 
             //Datapoint* myData = new Datapoint(data[2], data[4], stod(data[14]), stod(data[13]), edu);
            
-            main.addDatapoint(data[2], data[4], stod(data[14]), stod(data[13]), edu);
+            main.addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu);
             //cout << data[14] << endl;
 
             for (int i = 0; i < data.size(); i++)
@@ -104,16 +103,7 @@ void readFile(Dataset& main)
         }
     }
     myfile.close();
-    // vector<int> testVector{2, 5, 9, 1, 20, 10, 13, 15};
-    // // vector<int> testVector{2, 3, 9, 1};
-    // for (int& el : testVector)
-    //     cout << el << ", ";
-    // cout << endl;
 
-    // quickSort(testVector, 0, testVector.size() - 1);
-    // for (int& el : testVector)
-    //     cout << el << ", ";
-    // cout << endl;
     Dataset newDataset;
     //newDataset.addDatapoint("hello", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
     //newDataset.addDatapoint("helo", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
