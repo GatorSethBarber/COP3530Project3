@@ -52,6 +52,15 @@ void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, doubl
     jobTypes.push_back(newJobType);
 }
 
+/*
+void Dataset::addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
+int averageSalary, double projectedGrowth, string educationLevel) {
+    Datapoint* newJobType = new Datapoint(NAICS, industryDesc, SOC, occupationDesc, 
+                                          averageSalary, projectedGrowth, educationLevel);
+    jobTypes.push_back(newJobType);
+}
+*/
+
 
 // May need to add in function pointer or use weights
 void Dataset::rankAll() {

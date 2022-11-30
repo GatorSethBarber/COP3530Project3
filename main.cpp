@@ -13,7 +13,7 @@ void readFile(Dataset& main);
 
 int main() {
     Dataset main;
-    readFile(main);
+    //readFile(main);
 
 
     /*
@@ -104,6 +104,21 @@ void readFile(Dataset& main)
         }
     }
     myfile.close();
+    // vector<int> testVector{2, 5, 9, 1, 20, 10, 13, 15};
+    // // vector<int> testVector{2, 3, 9, 1};
+    // for (int& el : testVector)
+    //     cout << el << ", ";
+    // cout << endl;
+
+    // quickSort(testVector, 0, testVector.size() - 1);
+    // for (int& el : testVector)
+    //     cout << el << ", ";
+    // cout << endl;
+    Dataset newDataset;
+    //newDataset.addDatapoint("hello", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
+    //newDataset.addDatapoint("helo", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
+    //newDataset.mergeSort();
+    //newDataset.quickSort();
 }
 
 
