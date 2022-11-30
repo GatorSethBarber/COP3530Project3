@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "Datapoint.h"
-using namespace std;
+
 
 // The following is the main grist of the program. It handles
 class Dataset {
@@ -17,23 +17,23 @@ class Dataset {
     void mergeSortMerge(int startIndexOne, int startIndexTwo, int endIndex);    // No need to specify end of section one
     void quickSortRecursive(int start, int end);
 
-public:
-    // Main constructors
-    Dataset();
-    
-    // The big three
-    Dataset(const Dataset& other);
-    Dataset& operator=(const Dataset& other);
-    ~Dataset();
+    public:
+        // Main constructors
+        Dataset();
+        
+        // The big three
+        Dataset(const Dataset& other);
+        Dataset& operator=(const Dataset& other);
+        ~Dataset();
 
 
-    // Add in data (will need to modify this with Datapoint.h)
-    void addDatapoint(string NAICS, string SOC, int averageSalary, double projectedGrowth);
+        // Add in data (will need to modify this with Datapoint.h)
+        void addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu);
 
-    // May need to add in function pointer or use weights
-    void rankAll();
+        // May need to add in function pointer or use weights
+        void rankAll();
 
-    void mergeSort();
-    void quickSort();
+        void mergeSort();
+        void quickSort();
 
 };

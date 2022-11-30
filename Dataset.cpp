@@ -1,7 +1,8 @@
 #include "Dataset.h"
-
+using namespace std;
 /*================ Main constructors =====================*/
-Dataset::Dataset() : jobTypes() {}
+
+Dataset::Dataset() : jobTypes(10, nullptr) {}
 
 /*====================== The Big Three ===================*/
 // Helpers
@@ -24,9 +25,11 @@ void Dataset::ClearData() {
 }
 
 // The Big Three
+
 Dataset::Dataset(const Dataset& other) : jobTypes() {
     CopySet(other);
 }
+
 
 Dataset& Dataset::operator=(const Dataset& other) {
     if (&other != this)
@@ -35,16 +38,20 @@ Dataset& Dataset::operator=(const Dataset& other) {
     return *this;
 }
 
+
 Dataset::~Dataset() {
     ClearData();
 }
 
+
 /*============================= Accessors and Manipulators ==========================*/
 // Add in data (will need to modify this with Datapoint.h)
-void Dataset::addDatapoint(string NAICS, string SOC, int averageSalary, double projectedGrowth) {
-    Datapoint* newJobType = new Datapoint(NAICS, SOC, averageSalary, projectedGrowth);
+
+void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu) {
+    Datapoint* newJobType = new Datapoint(SOC, NAICS, averageSalary, projectedGrowth, edu);
     jobTypes.push_back(newJobType);
 }
+
 
 // May need to add in function pointer or use weights
 void Dataset::rankAll() {
