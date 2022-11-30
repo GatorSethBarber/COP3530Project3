@@ -41,8 +41,10 @@ Dataset::~Dataset() {
 
 /*============================= Accessors and Manipulators ==========================*/
 // Add in data (will need to modify this with Datapoint.h)
-void Dataset::addDatapoint(string NAICS, string SOC, int averageSalary, double projectedGrowth) {
-    Datapoint* newJobType = new Datapoint(NAICS, SOC, averageSalary, projectedGrowth);
+void Dataset::addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
+int averageSalary, double projectedGrowth, string educationLevel) {
+    Datapoint* newJobType = new Datapoint(NAICS, industryDesc, SOC, occupationDesc, 
+                                          averageSalary, projectedGrowth, educationLevel);
     jobTypes.push_back(newJobType);
 }
 

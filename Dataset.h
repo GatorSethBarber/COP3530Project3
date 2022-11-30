@@ -28,7 +28,8 @@ public:
 
 
     // Add in data (will need to modify this with Datapoint.h)
-    void addDatapoint(string NAICS, string SOC, int averageSalary, double projectedGrowth);
+    void addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
+    int averageSalary, double projectedGrowth, string educationLevel);
 
     // May need to add in function pointer or use weights
     void rankAll();
