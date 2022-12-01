@@ -73,7 +73,7 @@ void Dataset::rankAll() {
     for (int i = 0; i < 10; i++) {
         // Do ranking
         // Not sure how to access the object from the vector of pointers --Angelina
-        jobTypes[i]->print();
+        cout << jobTypes[i]->avgSalary << endl;
         //cout << jobTypes[i] << endl;
     }
 }

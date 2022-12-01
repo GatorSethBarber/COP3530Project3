@@ -103,7 +103,7 @@ void readFile(Dataset& main)
         }
     }
     myfile.close();
-
+    //cout << main.jobTypes[0]->avgSalary << endl;
     Dataset newDataset;
     //newDataset.addDatapoint("hello", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
     //newDataset.addDatapoint("helo", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
