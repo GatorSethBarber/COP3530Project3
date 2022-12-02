@@ -23,6 +23,7 @@ struct Datapoint {
     int averageSalary, double projectedGrowth, string educationLevel);
     */
     // The default big three will be satisfactory
+    string getIndustryNAICS();
     void print();
 
     bool operator<(const Datapoint& other);

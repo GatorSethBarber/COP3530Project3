@@ -67,13 +67,19 @@ int averageSalary, double projectedGrowth, string educationLevel) {
 }
 */
 
+vector<Datapoint*>& Dataset::getJobTypes()
+{
+    return jobTypes;
+}
+
 
 // May need to add in function pointer or use weights
-void Dataset::rankAll() {
+void Dataset::rankAll(vector<Datapoint*>& myData) {
+    //vector<Datapoint*> myData = this->getJobTypes();
     for (int i = 0; i < 10; i++) {
         // Do ranking
         // Not sure how to access the object from the vector of pointers --Angelina
-        cout << jobTypes[i]->avgSalary << endl;
+        myData[i]->print();
         //cout << jobTypes[i] << endl;
     }
 }

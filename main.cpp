@@ -14,8 +14,8 @@ void readFile(Dataset& main);
 int main() {
     Dataset main;
     readFile(main);
-
-    main.rankAll(); //Having issues with the rankAll() all function --Angelina
+    vector<Datapoint*> myData = main.getJobTypes();
+    //main.rankAll(myData); //Having issues with the rankAll() all function --Angelina
     /*
     vector<int> testVector{2, 5, 9, 1, 20, 10, 13, 15};
     // vector<int> testVector{2, 3, 9, 1};
@@ -103,7 +103,7 @@ void readFile(Dataset& main)
         }
     }
     myfile.close();
-    //cout << main.jobTypes[0]->avgSalary << endl;
+    main.getJobTypes()[0]->print(); //<< endl;
     Dataset newDataset;
     //newDataset.addDatapoint("hello", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
     //newDataset.addDatapoint("helo", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
