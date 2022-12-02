@@ -48,9 +48,13 @@ int averageSalary, double projectedGrowth, string educationLevel) {
 */
     // The default big three will be satisfactory
 
+string Datapoint::getIndustryNAICS()
+{
+    return this->industryNAICS;
+}
 void Datapoint::print()
 {
-    cout << industryNAICS << endl;
+    cout << occupationCode << endl;
 }
 
 bool Datapoint::operator<(const Datapoint& other) {
