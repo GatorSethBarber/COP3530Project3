@@ -1,9 +1,10 @@
 #include "Dataset.h"
 #include <iostream>
+#include <map>
 using namespace std;
 /*================ Main constructors =====================*/
 
-Dataset::Dataset() : jobTypes(10, nullptr) {}
+Dataset::Dataset() : jobTypes() {}
 
 /*====================== The Big Three ===================*/
 // Helpers
@@ -48,39 +49,73 @@ Dataset::~Dataset() {
 /*============================= Accessors and Manipulators ==========================*/
 // Add in data (will need to modify this with Datapoint.h)
 
-void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu)
+void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu,
+int work)
 {
-    Datapoint* newJobType = new Datapoint(SOC, NAICS, averageSalary, projectedGrowth, edu);
+    Datapoint* newJobType = new Datapoint(SOC, NAICS, averageSalary, projectedGrowth, edu, work);
     jobTypes.push_back(newJobType);
-}
 
-void Dataset::addDatapoint(Datapoint* dp)
-{
-    jobTypes.push_back(dp);
 }
-/*
-void Dataset::addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
-int averageSalary, double projectedGrowth, string educationLevel) {
-    Datapoint* newJobType = new Datapoint(NAICS, industryDesc, SOC, occupationDesc, 
-                                          averageSalary, projectedGrowth, educationLevel);
-    jobTypes.push_back(newJobType);
-}
-*/
 
 vector<Datapoint*>& Dataset::getJobTypes()
 {
     return jobTypes;
 }
 
+map<string, string>& Dataset::getOccupations()
+{
+    return occupationMap;
+}
+
 
 // May need to add in function pointer or use weights
-void Dataset::rankAll(vector<Datapoint*>& myData) {
-    //vector<Datapoint*> myData = this->getJobTypes();
-    for (int i = 0; i < 10; i++) {
-        // Do ranking
-        // Not sure how to access the object from the vector of pointers --Angelina
-        myData[i]->print();
-        //cout << jobTypes[i] << endl;
+void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
+    
+    map<int, pair<int, int>> salaryRanges;
+    salaryRanges = {
+        {0, make_pair(0, 19999)},
+        {1, make_pair(20000, 39999)},
+        {2, make_pair(40000, 79999)},
+        {3, make_pair(80000, 99999)},
+        {4, make_pair(100000, 149999)},
+        {5, make_pair(150000, INT_MAX)},
+    };
+
+    int minSalary = salaryRanges[salaryRange].first;
+    int maxSalary = salaryRanges[salaryRange].second;
+
+    for (int i = 0; i < jobTypes.size(); i++) {
+        Datapoint curr = *jobTypes[i];
+        double eduRanking = 0, salaryRanking = 0, jobGrowthRanking = 0, 
+        workExpRanking = 0;
+        if (jobTypes[i]->avgSalary < minSalary)
+        {
+            salaryRanking = (1.0 / jobTypes[i]->avgSalary) * -5.0;
+        }
+        else if (jobTypes[i]->avgSalary > maxSalary)
+        {
+            salaryRanking = jobTypes[i]->avgSalary * 2.0;
+        }
+        else
+        {
+            salaryRanking = jobTypes[i]->avgSalary * 10;
+        }
+        salaryRanking /= 1000.0;
+        jobGrowthRanking = curr.projJobGrowth * jobGrowth;
+        if (jobTypes[i]->education == edu)
+        {
+            eduRanking = 10;
+        }
+        else if (jobTypes[i]->education < edu)
+        {
+            eduRanking = 5;
+        }
+        else
+        {
+            eduRanking = 1;
+        }
+        jobTypes[i]->ranking = salaryRanking + jobGrowthRanking + eduRanking;
+
     }
 }
 
@@ -91,46 +126,94 @@ void Dataset::mergeSortDivide(int startIndex, int endIndex) {
         return;
 
     // Otherwise, split the left and right and merge
-    int midIndex = (startIndex + endIndex) / 2;
+    int midIndex = (startIndex + startIndex) / 2;
     mergeSortDivide(startIndex, midIndex);
-    mergeSortDivide(midIndex, endIndex);
+    mergeSortDivide(midIndex + 1, endIndex);
+    cout << startIndex << " " << midIndex << " " << endIndex << endl;
     mergeSortMerge(startIndex, midIndex, endIndex);
 }
 
 // todo: Check the indices out to make sure no conflicts exist (i.e., off by one errors)
-void Dataset::mergeSortMerge(int startIndexOne, int startIndexTwo, int endIndex) {
-    auto mergedSection = vector<Datapoint*>();
-
-    int leftIndex = startIndexOne, rightIndex = startIndexTwo;
-    // While the left part is not empty and the right part is not empty
-    while ((startIndexOne - leftIndex) > 1 && (endIndex - rightIndex) > 1) {
-        if (*jobTypes[leftIndex] <= *jobTypes[rightIndex]) {                           // Need to dereference for comparison
-            mergedSection.push_back(jobTypes[leftIndex]);
-            leftIndex++;
+void Dataset::mergeSortMerge(int left, int mid, int right) {
+    int n1 = mid - left + 1;
+	int n2 = right - mid;
+	vector<Datapoint*> temp1;
+    vector<Datapoint*> temp2; // where O(n) space comes from
+	
+	for (int i = 0; i < n1; i++)
+		temp1.push_back(jobTypes[left + i]);
+	for (int j = 0; j < n2; j++)
+		temp2.push_back(jobTypes[mid + 1 + j]);
+    	// merge arrays X and Y into arr
+    /*
+    cout << "Temp 1: " << endl;
+    for (auto el : temp1)
+    {
+        cout << el->ranking << " ";
+    }
+    cout << endl;
+    cout << "Temp 2: " << endl;
+    for (auto el : temp2)
+    {
+        cout << el->ranking << " ";
+    }
+    cout << endl;
+    */
+	int i, j, k;
+	i = 0;
+	j = 0;
+	k = left;
+	
+	while (i < n1 && j < n2)
+    {
+     
+		if (temp1[i]->ranking <= temp2[j]->ranking)
+        {
+            //cout << temp1[i]->ranking << " <= " << temp2[j]->ranking << endl;
+			jobTypes[k] = temp1[i];
+			i++;
         }
-        else {
-            mergedSection.push_back(jobTypes[rightIndex]);
-            rightIndex++;
+        else
+        {
+            //cout << temp1[i]->ranking << " > " << temp2[j]->ranking << endl;
+			jobTypes[k] = temp2[j];
+			j++;
         }
+        k++;
     }
-
-    // Now, add in anything remaining from the left part
-    while (leftIndex < startIndexTwo) {
-        mergedSection.push_back(jobTypes[leftIndex]);
-        leftIndex++;
+        
+    //when we run out of elements in either X or Y append the remaining elements
+    while (i < n1)
+    {
+        jobTypes[k] = temp1[i];
+        i++;
+        k++;
     }
-    while (rightIndex < endIndex) {
-        mergedSection.push_back(jobTypes[rightIndex]);
-        rightIndex++;
+    while(j < n2)
+    {
+        jobTypes[k] = temp2[j];
+        j++;
+        k++;
     }
-
-    // Finally, copy the data back into the list
-    for (int i = 0; i < mergedSection.size(); i++)
-        jobTypes[i + startIndexOne] = mergedSection[i];
+    /*
+    cout << "New sort" << endl;
+    for (int i = left; i < right; i++)
+    {
+        cout << i << " " << jobTypes[i]->ranking << endl;
+    }
+    */
 }
 
-void Dataset::mergeSort() {
-    mergeSortDivide(0, jobTypes.size());
+void Dataset::mergeSort(int startIndex, int endIndex) {
+    if (startIndex >= endIndex)
+        return;
+
+    // Otherwise, split the left and right and merge
+    int midIndex = (startIndex + endIndex) / 2;
+    mergeSort(startIndex, midIndex);
+    mergeSort(midIndex + 1, endIndex);
+    //cout << startIndex << " " << midIndex << " " << endIndex << endl;
+    mergeSortMerge(startIndex, midIndex, endIndex);
 }
 
 void Dataset::quickSortRecursive(int start, int end) {
