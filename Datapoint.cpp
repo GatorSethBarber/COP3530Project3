@@ -1,6 +1,6 @@
 #include "Datapoint.h"
 #include<iostream>
-
+#include <map>
 
 /**
  * Proposed fields
@@ -14,47 +14,31 @@
 
 Datapoint::Datapoint() {
     industryNAICS = "0";
-    industryTitle = "None";
     occupationCode = "0";
-    occupationTitle = "None";
     avgSalary = 0;
     projJobGrowth = 0.0;
+    education = 0;
+    workExperience = 0;
     ranking = 0.0;
 }
 
-Datapoint::Datapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu)
+Datapoint::Datapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu
+, int work)
 {
     occupationCode = SOC;
     industryNAICS = NAICS;
     avgSalary = averageSalary;
     projJobGrowth = projectedGrowth;
     education = edu;
+    workExperience = work;
     ranking = 0.0;      
 }
 
-/*
-Datapoint::Datapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
-int averageSalary, double projectedGrowth, string educationLevel) {
-    // Going to assume data is ok. May want to add checks in
-    industryNAICS = NAICS;
-    industryTitle = industryDesc;
-    occupationCode = SOC;
-    occupationTitle = occupationDesc;
-    avgSalary = averageSalary;
-    projJobGrowth = projectedGrowth;
-    education = educationLevel;
-    ranking = 0.0;                                 // Ranking needs to be applied later
-}
-*/
     // The default big three will be satisfactory
 
-string Datapoint::getIndustryNAICS()
+void Datapoint::print(map<string, string> occupations)
 {
-    return this->industryNAICS;
-}
-void Datapoint::print()
-{
-    cout << occupationCode << endl;
+    cout << occupations[occupationCode] << " " << industryNAICS << endl;
 }
 
 bool Datapoint::operator<(const Datapoint& other) {

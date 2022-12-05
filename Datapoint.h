@@ -1,30 +1,26 @@
 #pragma once
 #include <string>
+#include <map>
 using namespace std;
 
 
 struct Datapoint {
     string industryNAICS;         // NAICS code
-    string industryTitle;
     string occupationCode;        // SOC code
     double avgSalary;                // Need to check if this is big enough
     double projJobGrowth;         // Use fractional (not percentage) representation
     int education;
-    string occupationTitle;
-    // work experience goes here      (possibly minimum number of years?)
+    int workExperience;
     double ranking;               // This is used in sorting
 
     // Main constructors (just define here for now)
     Datapoint();
 
-    Datapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu);
-    /*
-    Datapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
-    int averageSalary, double projectedGrowth, string educationLevel);
-    */
+    Datapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu, int work);
+
     // The default big three will be satisfactory
-    string getIndustryNAICS();
-    void print();
+
+    void print(map<string, string> occupations);
 
     bool operator<(const Datapoint& other);
 

@@ -14,9 +14,21 @@ void readFile(Dataset& main);
 int main() {
     Dataset main;
     readFile(main);
-    vector<Datapoint*> myData = main.getJobTypes();
-    //main.rankAll(myData); //Having issues with the rankAll() all function --Angelina
-    /*
+    cout << main.getJobTypes().size() << endl;
+    
+    main.rankAll(3, 3, 3, 3); 
+    
+    //main.mergeSort(0, main.getJobTypes().size() - 1);
+    main.quickSort();
+
+     
+    for (int i = main.getJobTypes().size() - 1; i > main.getJobTypes().size() - 10; i--)
+    {
+        cout << i << " ";
+        main.getJobTypes()[i]->print(main.getOccupations());
+        cout << endl;
+    }
+   /*
     vector<int> testVector{2, 5, 9, 1, 20, 10, 13, 15};
     // vector<int> testVector{2, 3, 9, 1};
     for (int& el : testVector)
@@ -49,7 +61,7 @@ void readFile(Dataset& main)
     count = 1; // for testing only
     if (myfile.is_open())
     {
-        while (count < 10) //!myfile.eof()
+        while (count < 100) //!myfile.eof()
         {
             vector<string> data;
             count++;
@@ -64,6 +76,7 @@ void readFile(Dataset& main)
             {
                 string substr;
                 getline(s_stream, substr, ','); //get first string delimited by comma
+                
                 if (substr.find("\"") != string::npos)
                 {
                     string substr2;
@@ -76,6 +89,7 @@ void readFile(Dataset& main)
                         substr += substr2;
                     }         
                 }
+                
                 data.push_back(substr);
             }
 
@@ -87,15 +101,15 @@ void readFile(Dataset& main)
             {
                 continue;
             }
+            if (count < 1115)
+            {
+                main.getOccupations().insert({data[2], data[3]});
+            }
             int edu = 0;
             if (eduValues.find(data[24]) != eduValues.end())
                 edu = eduValues[data[24]];
-
-            //Datapoint* myData = new Datapoint(data[2], data[4], stod(data[14]), stod(data[13]), edu);
-            //main.addDatapoint(new Datapoint(data[2], data[4], stod(data[14]), stod(data[13]), edu));
-            main.addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu);
-            //cout << data[14] << endl;
-
+            
+            main.addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, 0);
             for (int i = 0; i < data.size(); i++)
             {
                 //cout << i << " " << data[i] << endl;
@@ -103,12 +117,6 @@ void readFile(Dataset& main)
         }
     }
     myfile.close();
-    main.getJobTypes()[0]->print(); //<< endl;
-    Dataset newDataset;
-    //newDataset.addDatapoint("hello", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
-    //newDataset.addDatapoint("helo", "goodbye", "hello", "goodbye", 200, 1.3, "bachelor's");
-    //newDataset.mergeSort();
-    //newDataset.quickSort();
 }
 
 
