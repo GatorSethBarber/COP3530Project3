@@ -24,6 +24,7 @@ Dataset::Dataset() : jobTypes(), occupationMap() {
 */
 bool Dataset::readInData(string fileName) {
     ifstream myfile(fileName);
+    cout << fileName << endl;
     if (!myfile.is_open()) {
         return false;
     }

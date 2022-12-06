@@ -15,11 +15,11 @@ int main() {
         return -1;
     }
     
-    int salaryRange, jobGrowh, edu, workExp;    
+    // int salaryRange, jobGrowh, edu, workExp;    
     main.rankAll(3, 4, 3, 3); 
     
     main.quickSort();
-    string salaryRange, jobGrowth, edu, workExp;
+    // string salaryRange, jobGrowth, edu, workExp;
     // readFile(main);
     cout << main.getJobTypes().size() << endl;
     /*

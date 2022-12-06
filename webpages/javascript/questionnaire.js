@@ -3,7 +3,7 @@ const salaryInput = document.getElementById('inputSalary');
 const educationInput = document.getElementById('inputEducation');
 const experienceInput = document.getElementById('inputExperience');
 const alternateSortCheck = document.getElementById('datasetSwitch');
-const jobGrowthSlide = document.getElementById('inputJobGrowth')
+const jobGrowthSlide = document.getElementById('inputJobGrowth');
 
 const addRow = (occupation, salary, education, experience, jobGrowth) => {
     let row = tableBody.insertRow();
@@ -35,16 +35,9 @@ const clearTable = () => {
     }
 }
 
-const submitQuestionnaire = () => {
-    let salaryValue = salaryInput.value;
-    let educationValue = educationInput.value;
-    let experienceValue = experienceInput.value;
-    let jobGrowthValue = jobGrowthSlide.value;
-    console.log(`"${salaryValue}", "${educationValue}", "${experienceValue}", "${jobGrowthValue}"`);
-    let allGood = formValidation([salaryValue, educationValue, experienceValue]);
-    if (!allGood)
-        return;
-    
-    // In reality, would now pass to a callback function
-    addRow("None", salaryValue, educationValue, experienceValue);
+const populateTable = (twoDArray) => {
+    clearTable();
+    for (let i = 0; i < twoDArray.length; i++) {
+        addRow(...twoDArray[i]);
+    }
 }

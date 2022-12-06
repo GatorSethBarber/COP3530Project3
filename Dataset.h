@@ -41,7 +41,7 @@ class Dataset {
         
         // May need to add in function pointer or use weights
         void rankAll(int salaryRange, int jobGrowth, int edu, int workExp);
-        void mergeSort(int start, int end);
+        void mergeSort();
         void quickSort();
 
 };

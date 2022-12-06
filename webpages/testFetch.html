@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+    <button id="click">Click me</button>
+    <script>
+        const btn = document.getElementById('click');
+        btn.addEventListener('click', () => {
+            fetch('http://localhost:4500/?salary=0&education=0&experience=0&jobGrowth=2').then((rawData) => {
+                rawData.json().then((data) => {
+                    console.log(data);
+                });
+            });
+        })
+        
+    </script>
+</body>
+</html>
