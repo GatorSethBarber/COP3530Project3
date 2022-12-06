@@ -1,10 +1,92 @@
 #include "Dataset.h"
 #include <iostream>
 #include <map>
+#include <fstream>
+#include <sstream>
+#include <string>
 using namespace std;
-/*================ Main constructors =====================*/
+/*================ Main constructors and initializer =====================*/
 
-Dataset::Dataset() : jobTypes() {}
+Dataset::Dataset() : jobTypes(), occupationMap() {
+    educationMap = map<string, int>();
+    educationMap.insert({"No formal educational credential", 0});
+    educationMap.insert({"High school diploma or equivalent", 1});
+    educationMap.insert({"Postsecondary nondegree award", 2});
+    educationMap.insert({"Some college no degree", 3});
+    educationMap.insert({"Associate's degree", 4});
+    educationMap.insert({"Bachelor's degree", 5});
+    educationMap.insert({"Master's degree", 6});
+    educationMap.insert({"Doctoral or professional degree", 7});
+}
+
+/**
+ * Read in the data for the project.
+*/
+bool Dataset::readInData(string fileName) {
+    ifstream myfile(fileName);
+    if (!myfile.is_open()) {
+        return false;
+    }
+
+    string row;
+    int count = 1;
+    
+    while (!myfile.fail())
+    {
+        vector<string> data;
+        count++;
+        getline(myfile, row);
+        if (count < 3 || row.length() == 0)
+        {
+            continue;
+        }
+
+        // Create and use string stream from the string
+        istringstream s_stream(row);
+        while(s_stream.good()) 
+        {
+            string substr;
+            getline(s_stream, substr, ',');  //get delimited by comma
+            
+            if (substr.find("\"") != string::npos)
+            {
+                string substr2;
+                getline(s_stream, substr2, ',');
+                substr += substr2;
+                while (substr2.find("\"") == string::npos)
+                {
+                    substr += ',';
+                    getline(s_stream, substr2, ',');
+                    substr += substr2;
+                }         
+            }
+            data.push_back(substr);
+        }
+
+        string soc = data.at(2);
+        
+        if (soc == "00-0000") {
+            continue;
+        }
+
+        if (count < 1115) {
+            occupationMap.insert({data[2], data[3]});
+        }
+
+        int edu = 0;
+        if (educationMap.find(data.at(24)) != educationMap.end())
+            edu = educationMap[data[24]];
+
+        
+        addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, 0);
+    }
+    
+    if (!myfile.eof())
+        cout << "Something went wrong. counter = " << count << endl;
+
+    myfile.close();
+    return true;
+}
 
 /*====================== The Big Three ===================*/
 // Helpers for te big three
@@ -100,6 +182,21 @@ map<string, string>& Dataset::getOccupations()
     return occupationMap;
 }
 
+
+vector<vector<string>> Dataset::getLastN(int n) {
+    vector<vector<string>> returnVector;
+    for (int i = jobTypes.size() - 1; i >= 0 && n > 0; i--) {
+        vector<string> temp;
+        temp.push_back(occupationMap[jobTypes[i]->occupationCode]);
+        temp.push_back(to_string(jobTypes[i]->avgSalary));
+        temp.push_back(to_string(jobTypes[i]->projJobGrowth));
+        temp.push_back(to_string(jobTypes[i]->education));
+        returnVector.push_back(temp);
+        n--;
+    }
+    return returnVector;
+
+}
 
 /**
  * Rank all the datapoints in the dataset according to closeness

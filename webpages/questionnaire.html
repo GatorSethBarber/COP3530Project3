@@ -7,6 +7,7 @@
     <title>Questionnaire</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script type="text/javascript" src="./testing.js"></script>
 </head>
 
 <body>
@@ -80,20 +81,22 @@
                     <div class="mb-3">
                         <label for="inputEducation" class="form-label">Education Level</label>
                         <select class="form-select" name="inputEducation" id="inputEducation">
-                            <option selected disabled value="">Choose an education level</option>
-                            <option value="none">No high-school diploma</option>
-                            <option value="diploma">High-school diploma</option>
-                            <option value="associate">Associate's degree</option>
-                            <option value="bachelor">Bachelor's degree</option>
-                            <option value="master">Master's degree</option>
-                            <option value="doctorate">Doctorate or higher</option>
+                            <option selected disabled value="">Choose an education level</option>   
+                            <option value="0">No formal educational credential</option>
+                            <option value="1">High school diploma or equivalent</option>
+                            <option value="2">Postsecondary nondegree award</option>
+                            <option value="3">Some college no degree</option>
+                            <option value="4">Associate's degree</option>
+                            <option value="5">Bachelor's degree</option>
+                            <option value="6">Master's degree</option>
+                            <option value="7">Doctoral or professional degree</option>
                           </select>
                     </div>
                     <div class="mb-3">
                         <label for="inputExperience" class="form-label">Years of Work Experience</label>
                         <input type="number" class="form-control" id="inputExperience" min="0" step="1">
                       </div>
-                    <button type="button" class="btn btn-primary" onclick="submitQuestionnaire()">Submit</button>
+                    <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
                   </form>
             </div>
             <div class="col-8">
@@ -124,6 +127,57 @@
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
         crossorigin="anonymous"></script>
     <script src="javascript/questionnaire.js"></script>
+    <script>
+        let dataset;
+        const submitButton = document.getElementById('submitButton');
+        const datasetSwitch = document.getElementById('datasetSwitch');
+        createModule().then(({Dataset}) => {
+            dataset = new Dataset();
+            // dataset.readInData('../dataForProject.csv')
+            
+            let results = dataset.getLastN(2);
+            for (let i = 0; i < results.size(); i++) {
+                for (let j = 0; j < results.get(i).size(); j++) {
+                    console.log(`${results.get(i).get(j)}`);
+                }
+            }
+
+            
+            submitButton.addEventListener('click', () => {
+                let salaryValue = salaryInput.value;
+                let educationValue = educationInput.value;
+                let experienceValue = experienceInput.value;
+                let jobGrowthValue = jobGrowthSlide.value;
+                console.log(`"${salaryValue}", "${educationValue}", "${experienceValue}", "${jobGrowthValue}"`);
+                let allGood = formValidation([salaryValue, educationValue, experienceValue]);
+                if (!allGood)
+                    return;
+
+                dataset.rankAll(parseInt(salaryValue), parseFloat(jobGrowthValue), parseInt(educationValue), parseInt(experienceValue))
+
+                if (datasetSwitch.checked)
+                    dataset.quickSort();
+                else
+                    dataset.mergeSort();
+                
+                // https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+                while (tableBody.firstChild) {
+                    tableBody.removeChild(tableBody.firstChild);
+                }
+
+                let results = dataset.getLastN(2);
+                for (let i = 0; i < results.size(); i++) {
+                    let iterable = []
+                    for (let j = 0; j < results.get(i).size(); j++) {
+                        iterable.push(`${results.get(i).get(j)}`);
+                    }
+
+                    addRow(...iterable);
+                }
+            })
+
+        })
+    </script>
 </body>
 
 </html>

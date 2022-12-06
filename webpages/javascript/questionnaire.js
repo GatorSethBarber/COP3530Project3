@@ -28,6 +28,13 @@ const formValidation = (inputValues) => {
     return true;
 }
 
+const clearTable = () => {
+    // https://www.javascripttutorial.net/dom/manipulating/remove-all-child-nodes/
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+    }
+}
+
 const submitQuestionnaire = () => {
     let salaryValue = salaryInput.value;
     let educationValue = educationInput.value;
