@@ -20,6 +20,7 @@ int main() {
 
     cout << main.getJobTypes().size() << endl;
     /*
+    CLI
     cout << "Choose a salary range: " << endl;
     cout << "0: Below $20,000" << endl;
     cout << "1: $20,000-$40,000" << endl;
@@ -53,20 +54,19 @@ int main() {
     cin >> workExp;
     cout << "" << endl;
     cout << "Recommended Careers:" << endl;
-    */
-    //main.rankAll(stoi(salaryRange), stoi(jobGrowth), stoi(edu), stoi(workExp)); 
     
-    //main.mergeSort(0, main.getJobTypes().size() - 1);
-    //main.quickSort();
+    main.rankAll(stoi(salaryRange), stoi(jobGrowth), stoi(edu), stoi(workExp));     
+    main.mergeSort();
+    main.quickSort();
 
-    /*
     for (int i = main.getJobTypes().size() - 1; i > main.getJobTypes().size() - 10; i--)
     {
         std::cout << i << " ";
         main.getJobTypes()[i]->print(main.getOccupations(), main.getIndustries());
         std::cout << endl;
     }
-      */
+    */
+   
     vector<vector<string>> lastOnes = main.getLastN(10);
     for (int i = 0; i < lastOnes.size(); i++) {
         for (int j = 0; j < lastOnes[i].size(); j++) {

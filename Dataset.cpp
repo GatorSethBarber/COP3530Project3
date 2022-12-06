@@ -5,9 +5,10 @@
 #include <sstream>
 #include <string>
 using namespace std;
+
 /*================ Main constructors and initializer =====================*/
 
-Dataset::Dataset() : jobTypes(), occupationMap() {
+Dataset::Dataset() : jobTypes(), occupationMap(), industryMap() {
     educationMap = map<string, int>();
     educationMap.insert({"No formal educational credential", 0});
     educationMap.insert({"High school diploma or equivalent", 1});
@@ -37,32 +38,27 @@ bool Dataset::readInData(string fileName) {
     }
 
     string row;
-    int count = 1;
+    int count = 0;
     
-    while (!myfile.fail())
-    {
+    while (!myfile.fail()) {
         vector<string> data;
         count++;
         getline(myfile, row);
-        if (count < 3 || row.length() == 0)
-        {
+        if (count < 3 || row.length() == 0) {
             continue;
         }
 
         // Create and use string stream from the string
         istringstream s_stream(row);
-        while(s_stream.good()) 
-        {
+        while(s_stream.good()) {
             string substr;
-            getline(s_stream, substr, ',');  //get delimited by comma
+            getline(s_stream, substr, ',');  // get delimited by comma
             
-            if (substr.find("\"") != string::npos)
-            {
+            if (substr.find("\"") != string::npos) {
                 string substr2;
                 getline(s_stream, substr2, ',');
                 substr += substr2;
-                while (substr2.find("\"") == string::npos)
-                {
+                while (substr2.find("\"") == string::npos) {
                     substr += ',';
                     getline(s_stream, substr2, ',');
                     substr += substr2;
@@ -74,22 +70,29 @@ bool Dataset::readInData(string fileName) {
 
         string soc = data.at(2);
         
+        // 00-0000 refers to all occupations in a certain industry.
+        // These datapoints are not needed.
         if (soc == "00-0000") {
             continue;
         }
 
+        // Occupation codes repeat, so only need to insert them once.
         if (count < 1115) {
             occupationMap.insert({data[2], data[3]});
         }
-
-        if (industryMap.find(data[4]) == industryMap.end())
-        {
+        
+        // Adding NAICS codes to their corresponding descriptions.
+        if (industryMap.find(data[4]) == industryMap.end()) {
             industryMap.insert({data[4], data[5]});
         }
 
         int edu = 0, work = 0;
+
+        // Maps the education level to a number
         if (educationMap.find(data.at(24)) != educationMap.end())
             edu = educationMap[data[24]];
+
+        // Maps work experience to a number
         work = workExpMap[data[25]];
         
         addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, work);
@@ -171,8 +174,7 @@ Dataset::~Dataset() {
  * @param work The work experience needed
  */
 void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu,
-int work)
-{
+int work) {
     Datapoint* newJobType = new Datapoint(SOC, NAICS, averageSalary, projectedGrowth, edu, work);
     jobTypes.push_back(newJobType);
 
@@ -182,8 +184,7 @@ int work)
  * Get a reference to the jobTypes vector, which stores the data.
  * @return A non-constant reference
 */
-vector<Datapoint*>& Dataset::getJobTypes()
-{
+vector<Datapoint*>& Dataset::getJobTypes() {
     return jobTypes;
 }
 
@@ -191,8 +192,7 @@ vector<Datapoint*>& Dataset::getJobTypes()
  * Get a non-constant reference to the occupation map.
  * @return A non-constant reference
  */
-map<string, string>& Dataset::getOccupations()
-{
+map<string, string>& Dataset::getOccupations() {
     return occupationMap;
 }
 
@@ -200,8 +200,7 @@ map<string, string>& Dataset::getOccupations()
  * Get a non-constant reference to the industry map.
  * @return A non-constant reference
  */
-map<string, string>& Dataset::getIndustries()
-{
+map<string, string>& Dataset::getIndustries() {
     return industryMap;
 }
 
@@ -256,20 +255,29 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
 
         if (jobTypes[i]->avgSalary < minSalary)
         {
+            // If the salary is less than the minimum salary, it 
+            // gets the inverse to decrease the ranking.
             salaryRanking = (1.0 / jobTypes[i]->avgSalary) * -5.0;
         }
         else if (jobTypes[i]->avgSalary > maxSalary)
         {
+            // Only a slight boost in the ranking if the salary
+            // is above the maximum salary desired.
             salaryRanking = jobTypes[i]->avgSalary * 2.0;
         }
         else
         {
+            // If the salary is in the range, then it gets
+            // the greatest boost in ranking.
             salaryRanking = jobTypes[i]->avgSalary * 10;
         }
-        salaryRanking /= 1000.0;
+        salaryRanking /= 1000.0; // Equalizes the weight of the salaryRanking.
 
+        // Multiplies the job growth by the importance selected by the user
         jobGrowthRanking = curr.projJobGrowth * jobGrowth;
 
+        // If the education matches the user selected education,
+        // then the ranking gets the greatest boost
         if (jobTypes[i]->education == edu)
         {
             eduRanking = 10;
@@ -280,8 +288,10 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
         }
         else
         {
-            eduRanking = 1;
+            eduRanking = 0;
         }
+
+        // The work functions the same way as education level.
         if (jobTypes[i]->workExperience == workExp)
         {
             workExpRanking = 10;
@@ -307,7 +317,7 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
  * @param endIndex The ending index for the merge sort
  */
 void Dataset::mergeSortDivide(int startIndex, int endIndex) {
-    // Formerly, mergeSort the same except had if(startIndex >= endIndex)
+    // Base case: 0 or 1 elements
     if ((endIndex - startIndex) < 2)
         return;
 
@@ -319,7 +329,7 @@ void Dataset::mergeSortDivide(int startIndex, int endIndex) {
     mergeSortMerge(startIndex, midIndex, endIndex);
 }
 
-// todo: Check the indices out to make sure no conflicts exist (i.e., off by one errors)
+
 /**
  * Works with mergeSortDivide. Merges the two parts of an array
  * @param left The beginning of the first subarray to merge
@@ -330,27 +340,14 @@ void Dataset::mergeSortMerge(int left, int mid, int right) {
     int n1 = mid - left + 1;
 	int n2 = right - mid;
 	vector<Datapoint*> temp1;
-    vector<Datapoint*> temp2; // where O(n) space comes from
+    vector<Datapoint*> temp2; 
 	
 	for (int i = 0; i < n1; i++)
 		temp1.push_back(jobTypes[left + i]);
 	for (int j = 0; j < n2; j++)
 		temp2.push_back(jobTypes[mid + 1 + j]);
-    	// merge arrays X and Y into arr
-    /*
-    cout << "Temp 1: " << endl;
-    for (auto el : temp1)
-    {
-        cout << el->ranking << " ";
-    }
-    cout << endl;
-    cout << "Temp 2: " << endl;
-    for (auto el : temp2)
-    {
-        cout << el->ranking << " ";
-    }
-    cout << endl;
-    */
+    
+    // merge vectors temp1 and temp2 into the jobTypes vector
 	int i, j, k;
 	i = 0;
 	j = 0;
@@ -358,23 +355,20 @@ void Dataset::mergeSortMerge(int left, int mid, int right) {
 	
 	while (i < n1 && j < n2)
     {
-     
 		if (temp1[i]->ranking <= temp2[j]->ranking)
         {
-            //cout << temp1[i]->ranking << " <= " << temp2[j]->ranking << endl;
 			jobTypes[k] = temp1[i];
 			i++;
         }
         else
         {
-            //cout << temp1[i]->ranking << " > " << temp2[j]->ranking << endl;
 			jobTypes[k] = temp2[j];
 			j++;
         }
         k++;
     }
         
-    //when we run out of elements in either X or Y append the remaining elements
+    //when we run out of elements in either temp1 or temp2, add them to jobTypes
     while (i < n1)
     {
         jobTypes[k] = temp1[i];
@@ -387,17 +381,10 @@ void Dataset::mergeSortMerge(int left, int mid, int right) {
         j++;
         k++;
     }
-    /*
-    cout << "New sort" << endl;
-    for (int i = left; i < right; i++)
-    {
-        cout << i << " " << jobTypes[i]->ranking << endl;
-    }
-    */
 }
 
 /**
- * Wrapper function to perform a merge sort
+ * Function to perform a merge sort
  */
 void Dataset::mergeSort() {
     mergeSortDivide(0, jobTypes.size() - 1);
@@ -418,7 +405,7 @@ void Dataset::quickSortRecursive(int start, int end) {
     int pivot = (start + end) / 2;
     auto pivotPtr = jobTypes[pivot];
     jobTypes[pivot] = jobTypes[start];
-    //  jobTypes[start] = pivotValue;
+    
 
     int moveDown = end;
     int moveUp = start + 1;

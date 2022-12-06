@@ -18,7 +18,7 @@ class Dataset {
     void ClearData();
 
     void mergeSortDivide(int startIndex, int endIndex);
-    void mergeSortMerge(int startIndexOne, int startIndexTwo, int endIndex);    // No need to specify end of section one
+    void mergeSortMerge(int startIndexOne, int startIndexTwo, int endIndex);
     void quickSortRecursive(int start, int end);
 
     public:
@@ -40,8 +40,6 @@ class Dataset {
         map<string, string>& getIndustries();
         vector<vector<string>> getLastN(int n);
 
-        
-        // May need to add in function pointer or use weights
         void rankAll(int salaryRange, int jobGrowth, int edu, int workExp);
         void mergeSort();
         void quickSort();
