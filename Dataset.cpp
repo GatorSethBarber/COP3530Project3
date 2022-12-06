@@ -71,6 +71,8 @@ bool Dataset::readInData(string fileName) {
 
         if (count < 1115) {
             occupationMap.insert({data[2], data[3]});
+            industryMap.insert({data[4], data[5]});
+            cout << data[4] << endl;
         }
 
         int edu = 0;
@@ -182,12 +184,22 @@ map<string, string>& Dataset::getOccupations()
     return occupationMap;
 }
 
+/**
+ * Get a non-constant reference to the industry map.
+ * @return A non-constant reference
+ */
+map<string, string>& Dataset::getIndustries()
+{
+    return industryMap;
+}
+
 
 vector<vector<string>> Dataset::getLastN(int n) {
     vector<vector<string>> returnVector;
     for (int i = jobTypes.size() - 1; i >= 0 && n > 0; i--) {
         vector<string> temp;
         temp.push_back(occupationMap[jobTypes[i]->occupationCode]);
+        temp.push_back(industryMap[jobTypes[i]->industryNAICS]);
         temp.push_back(to_string(jobTypes[i]->avgSalary));
         temp.push_back(to_string(jobTypes[i]->projJobGrowth));
         temp.push_back(to_string(jobTypes[i]->education));

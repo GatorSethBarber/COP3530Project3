@@ -15,12 +15,12 @@ int main() {
         return -1;
     }
     
-    int salaryRange, jobGrowh, edu, workExp;    
+  
     main.rankAll(3, 4, 3, 3); 
     
     main.quickSort();
     string salaryRange, jobGrowth, edu, workExp;
-    // readFile(main);
+
     cout << main.getJobTypes().size() << endl;
     /*
     cout << "Choose a salary range: " << endl;
@@ -62,7 +62,14 @@ int main() {
     //main.mergeSort(0, main.getJobTypes().size() - 1);
     //main.quickSort();
 
-     
+    /*
+    for (int i = main.getJobTypes().size() - 1; i > main.getJobTypes().size() - 10; i--)
+    {
+        std::cout << i << " ";
+        main.getJobTypes()[i]->print(main.getOccupations(), main.getIndustries());
+        std::cout << endl;
+    }
+      */
     vector<vector<string>> lastOnes = main.getLastN(10);
     for (int i = 0; i < lastOnes.size(); i++) {
         for (int j = 0; j < lastOnes[i].size(); j++) {
@@ -70,12 +77,7 @@ int main() {
         }
         cout << endl;
     }
-    // for (int i = main.getJobTypes().size() - 1; i > main.getJobTypes().size() - 10; i--)
-    // {
-    //     std::cout << i << " ";
-    //     main.getJobTypes()[i]->print(main.getOccupations());
-    //     std::cout << endl;
-    // }
+    
    
    return 0;
 }

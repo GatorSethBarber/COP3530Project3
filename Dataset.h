@@ -9,6 +9,7 @@ class Dataset {
 
     vector<Datapoint*> jobTypes;
     map<string, string> occupationMap;
+    map<string, string> industryMap;
     map<string, int> educationMap;
 
     // Helpers associated with the big three
@@ -35,7 +36,7 @@ class Dataset {
         int edu, int work);
         vector<Datapoint*>& getJobTypes();
         map<string, string>& getOccupations();
-
+        map<string, string>& getIndustries();
         vector<vector<string>> getLastN(int n);
 
         
