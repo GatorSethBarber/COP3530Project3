@@ -8,18 +8,17 @@ using namespace std;
 struct Datapoint {
     string industryNAICS;         // NAICS code
     string occupationCode;        // SOC code
-    double avgSalary;                // Need to check if this is big enough
-    double projJobGrowth;         // Use fractional (not percentage) representation
-    int education;
-    int workExperience;
-    double ranking;               // This is used in sorting
+    double avgSalary;             // Average salary
+    double projJobGrowth;         // Projected job growth
+    int education;                // Average education needed
+    int workExperience;           // Work experience needed
+    double ranking;               // This is used to sort
 
-    // Main constructors (just define here for now)
+    // Main constructors
     Datapoint();
 
-    Datapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu, int work);
-
-    // The default big three will be satisfactory
+    Datapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, 
+    int edu, int work);
 
     void print(map<string, string> occupations, map<string, string> industries);
 
