@@ -13,13 +13,48 @@ void readFile(Dataset& main);
 
 int main() {
     Dataset main;
+    string salaryRange, jobGrowth, edu, workExp;
     readFile(main);
     cout << main.getJobTypes().size() << endl;
-    
-    main.rankAll(3, 3, 3, 3); 
+    /*
+    cout << "Choose a salary range: " << endl;
+    cout << "0: Below $20,000" << endl;
+    cout << "1: $20,000-$40,000" << endl;
+    cout << "2: $40,000-80,000" << endl;
+    cout << "3: 80,000-100,000" << endl;
+    cout << "4: $100,000-$150,000" << endl;
+    cout << "5: Above $150,000" << endl;
+    cin >> salaryRange;
+    cout << "How important is projected job growth to you?" << endl;
+    cout << "0: Not important" << endl;
+    cout << "1: Somewhat unimportant" << endl;
+    cout << "2: Neutral" << endl;
+    cout << "3: Somewhat important" << endl;
+    cout << "4: Very important" << endl;
+    cout << "5: Extremely important" << endl;
+    cin >> jobGrowth;
+    cout << "Choose your education level: " << endl;
+    cout << "0: No formal educational credential" << endl;
+    cout << "1: High school diploma or equivalent" << endl;
+    cout << "2: Postsecondary nondegree award" << endl;
+    cout << "3: Some college, no degree" << endl;
+    cout << "4: Associate's degree" << endl;
+    cout << "5: Bachelor's degree" << endl;
+    cout << "6: Master's degree" << endl;
+    cout << "7: Doctoral or professional" << endl;
+    cin >> edu;
+    cout << "Years of Work Experience" << endl;
+    cout << "0: None" << endl;
+    cout << "1: Less than 5 years" << endl;
+    cout << "2: 5 years or more" << endl;
+    cin >> workExp;
+    cout << "" << endl;
+    cout << "Recommended Careers:" << endl;
+    */
+    //main.rankAll(stoi(salaryRange), stoi(jobGrowth), stoi(edu), stoi(workExp)); 
     
     //main.mergeSort(0, main.getJobTypes().size() - 1);
-    main.quickSort();
+    //main.quickSort();
 
      
     for (int i = main.getJobTypes().size() - 1; i > main.getJobTypes().size() - 10; i--)
@@ -28,18 +63,6 @@ int main() {
         main.getJobTypes()[i]->print(main.getOccupations());
         cout << endl;
     }
-   /*
-    vector<int> testVector{2, 5, 9, 1, 20, 10, 13, 15};
-    // vector<int> testVector{2, 3, 9, 1};
-    for (int& el : testVector)
-        cout << el << ", ";
-    cout << endl;
-
-    quickSort(testVector, 0, testVector.size() - 1);
-    for (int& el : testVector)
-        cout << el << ", ";
-    cout << endl;
-    */
 }
 
 void readFile(Dataset& main)
@@ -57,11 +80,18 @@ void readFile(Dataset& main)
     eduValues.insert({"Master's degree", 6});
     eduValues.insert({"Doctoral or professional degree", 7});
 
+    map<string, int> workExp =
+    {
+        {"None", 0},
+        {"Less than 5 years", 1},
+        {"5 years or more", 2},
+    };
+
     myfile.open("dataForProject.csv");
     count = 1; // for testing only
     if (myfile.is_open())
     {
-        while (count < 100) //!myfile.eof()
+        while (!myfile.eof()) //!myfile.eof()
         {
             vector<string> data;
             count++;
@@ -105,11 +135,12 @@ void readFile(Dataset& main)
             {
                 main.getOccupations().insert({data[2], data[3]});
             }
-            int edu = 0;
+            int edu = 0, work = 0;
             if (eduValues.find(data[24]) != eduValues.end())
                 edu = eduValues[data[24]];
+            work = workExp[data[25]];
+            main.addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, work);
             
-            main.addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, 0);
             for (int i = 0; i < data.size(); i++)
             {
                 //cout << i << " " << data[i] << endl;
