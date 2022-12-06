@@ -34,7 +34,7 @@ class Dataset {
         vector<Datapoint*>& getJobTypes();
         map<string, string>& getOccupations();
         void rankAll(int salaryRange, int jobGrowth, int edu, int workExp);
-        void mergeSort(int start, int end);
+        void mergeSort();
         void quickSort();
 
 };

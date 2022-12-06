@@ -190,7 +190,7 @@ void Dataset::mergeSortDivide(int startIndex, int endIndex) {
     int midIndex = (startIndex + startIndex) / 2;
     mergeSortDivide(startIndex, midIndex);
     mergeSortDivide(midIndex + 1, endIndex);
-    cout << startIndex << " " << midIndex << " " << endIndex << endl;
+    
     mergeSortMerge(startIndex, midIndex, endIndex);
 }
 
