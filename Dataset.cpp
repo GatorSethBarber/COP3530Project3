@@ -208,13 +208,17 @@ map<string, string>& Dataset::getIndustries()
 
 vector<vector<string>> Dataset::getLastN(int n) {
     vector<vector<string>> returnVector;
+    map<int, string> eduTranslation;
+    for (auto iter = educationMap.begin(); iter != educationMap.end(); iter++) {
+        eduTranslation[iter->second] = iter->first;
+    }
     for (int i = jobTypes.size() - 1; i >= 0 && n > 0; i--) {
         vector<string> temp;
         temp.push_back(occupationMap[jobTypes[i]->occupationCode]);
         temp.push_back(industryMap[jobTypes[i]->industryNAICS]);
-        temp.push_back(to_string(jobTypes[i]->avgSalary));
+        temp.push_back(to_string((long)jobTypes[i]->avgSalary));
         temp.push_back(to_string(jobTypes[i]->projJobGrowth));
-        temp.push_back(to_string(jobTypes[i]->education));
+        temp.push_back(eduTranslation[jobTypes[i]->education]);
         returnVector.push_back(temp);
         n--;
     }
