@@ -308,7 +308,7 @@ void Dataset::mergeSortDivide(int startIndex, int endIndex) {
         return;
 
     // Otherwise, split the left and right and merge
-    int midIndex = (startIndex + startIndex) / 2;
+    int midIndex = (startIndex + endIndex) / 2;
     mergeSortDivide(startIndex, midIndex);
     mergeSortDivide(midIndex + 1, endIndex);
     

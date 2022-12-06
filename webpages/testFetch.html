@@ -9,7 +9,7 @@
     <script>
         const btn = document.getElementById('click');
         btn.addEventListener('click', () => {
-            fetch('http://localhost:4500/?salary=0&education=0&experience=0&jobGrowth=2').then((rawData) => {
+            fetch('http://localhost:4500/?salary=0&education=0&experience=0&jobGrowth=2&useSort=0').then((rawData) => {
                 rawData.json().then((data) => {
                     console.log(data);
                 });

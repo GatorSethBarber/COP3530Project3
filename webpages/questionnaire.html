@@ -87,7 +87,12 @@
                     </div>
                     <div class="mb-3">
                         <label for="inputExperience" class="form-label">Years of Work Experience</label>
-                        <input type="number" class="form-control" id="inputExperience" min="0" step="1">
+                        <select class="form-select" name="inputExperience" id="inputExperience">
+                            <option selected disabled value="">Choose an work experience level</option>   
+                            <option value="0">None</option>
+                            <option value="1">Less than 5 years</option>
+                            <option value="2">5 years or more</option>
+                          </select>
                       </div>
                     <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
                   </form>

@@ -16,7 +16,6 @@ int main() {
     }
     
     
-    main.quickSort();
     string salaryRange, jobGrowth, edu, workExp;
 
     cout << main.getJobTypes().size() << endl;
