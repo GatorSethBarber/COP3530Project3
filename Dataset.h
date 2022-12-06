@@ -9,6 +9,7 @@ class Dataset {
 
     vector<Datapoint*> jobTypes;
     map<string, string> occupationMap;
+    map<string, int> educationMap;
 
     // Helpers associated with the big three
     void CopySet(const Dataset& other);
@@ -21,6 +22,7 @@ class Dataset {
     public:
         // Main constructors
         Dataset();
+        bool readInData(string fileName);
         
         // The big three
         Dataset(const Dataset& other);
@@ -33,6 +35,11 @@ class Dataset {
         int edu, int work);
         vector<Datapoint*>& getJobTypes();
         map<string, string>& getOccupations();
+
+        vector<vector<string>> getLastN(int n);
+
+        
+        // May need to add in function pointer or use weights
         void rankAll(int salaryRange, int jobGrowth, int edu, int workExp);
         void mergeSort();
         void quickSort();
