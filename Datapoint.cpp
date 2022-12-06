@@ -12,6 +12,9 @@
  *  * work experience needed
 */
 
+/**
+ * Constructor for the Datapoint struct
+ */
 Datapoint::Datapoint() {
     industryNAICS = "0";
     occupationCode = "0";
@@ -34,13 +37,16 @@ Datapoint::Datapoint(string SOC, string NAICS, double averageSalary, double proj
     ranking = 0.0;      
 }
 
-    // The default big three will be satisfactory
 
+/**
+ * Print some information associated with the Datapoint
+*/
 void Datapoint::print(map<string, string> occupations)
 {
     cout << occupations[occupationCode] << " " << industryNAICS << endl;
 }
 
+// The operators compare the rankings of the Datapoints
 bool Datapoint::operator<(const Datapoint& other) {
     return ranking < other.ranking;
 }

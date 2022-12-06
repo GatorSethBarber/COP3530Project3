@@ -33,15 +33,12 @@ class Dataset {
         int edu, int work);
         vector<Datapoint*>& getJobTypes();
         map<string, string>& getOccupations();
-        // Add in data (will need to modify this with Datapoint.h)
-        /*
-        void addDatapoint(string NAICS, string industryDesc, string SOC, string occupationDesc, 
-        int averageSalary, double projectedGrowth, string educationLevel);
-        */
+
+        
         // May need to add in function pointer or use weights
         void rankAll(int salaryRange, int jobGrowth, int edu, int workExp);
 
-        void mergeSort(int start, int end);
+        void mergeSort();
         void quickSort();
 
 };

@@ -1,12 +1,43 @@
-function submitQuestionnaire() {
-    const table = document.getElementById("tableBody");
-    let row = table.insertRow();
-    let occupation = row.insertCell(0);
-    occupation.innerHTML = "test";
-    let salary = row.insertCell(1);
-    salary.innerHTML = document.getElementById("inputSalary").value;
-    let education = row.insertCell(2);
-    education.innerHTML = document.getElementById("inputEducation").value;
-    let workExperience = row.insertCell(3);
-    workExperience.innerHTML = document.getElementById("inputExperience").value;
+const tableBody = document.getElementById('tableBody');
+const salaryInput = document.getElementById('inputSalary');
+const educationInput = document.getElementById('inputEducation');
+const experienceInput = document.getElementById('inputExperience');
+const alternateSortCheck = document.getElementById('datasetSwitch');
+const jobGrowthSlide = document.getElementById('inputJobGrowth')
+
+const addRow = (occupation, salary, education, experience, jobGrowth) => {
+    let row = tableBody.insertRow();
+    let occCell = row.insertCell(0);
+    occCell.innerHTML = occupation;
+    let salCell = row.insertCell(1);
+    salCell.innerHTML = salary;
+    let eduCell = row.insertCell(2);
+    eduCell.innerHTML = education;
+    let experCell = row.insertCell(3);
+    experCell.innerHTML = experience;
+}
+
+const formValidation = (inputValues) => {
+    for (let i = 0; i < inputValues.length; i++) {
+        if (inputValues[i] == "") {
+            alert("Must supply information concerning all fields.");
+            return false;
+        }
+    }
+
+    return true;
+}
+
+const submitQuestionnaire = () => {
+    let salaryValue = salaryInput.value;
+    let educationValue = educationInput.value;
+    let experienceValue = experienceInput.value;
+    let jobGrowthValue = jobGrowthSlide.value;
+    console.log(`"${salaryValue}", "${educationValue}", "${experienceValue}", "${jobGrowthValue}"`);
+    let allGood = formValidation([salaryValue, educationValue, experienceValue]);
+    if (!allGood)
+        return;
+    
+    // In reality, would now pass to a callback function
+    addRow("None", salaryValue, educationValue, experienceValue);
 }
