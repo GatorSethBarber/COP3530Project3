@@ -2,6 +2,7 @@
 // https://www.codecademy.com/courses/learn-node-js/lessons/setting-up-a-server-with-http/exercises/http-review
 // https://nodejs.org/en/docs/guides/getting-started-guide/
 // Heavily influenced by https://www.youtube.com/watch?v=3ZAKY-CDKog
+// Researched and created this server for a previous project in CIS4301.
 
 const http = require('http');
 const path = require('path');
