@@ -15,8 +15,6 @@ int main() {
         return -1;
     }
     
-  
-    main.rankAll(3, 4, 3, 3); 
     
     main.quickSort();
     string salaryRange, jobGrowth, edu, workExp;

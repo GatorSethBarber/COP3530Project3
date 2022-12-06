@@ -17,6 +17,13 @@ Dataset::Dataset() : jobTypes(), occupationMap() {
     educationMap.insert({"Bachelor's degree", 5});
     educationMap.insert({"Master's degree", 6});
     educationMap.insert({"Doctoral or professional degree", 7});
+
+    workExpMap =
+    {
+        {"None", 0},
+        {"Less than 5 years", 1},
+        {"5 years or more", 2},
+    };
 }
 
 /**
@@ -59,6 +66,7 @@ bool Dataset::readInData(string fileName) {
                     getline(s_stream, substr2, ',');
                     substr += substr2;
                 }         
+                substr = substr.substr(1, substr.length()-2); 
             }
             data.push_back(substr);
         }
@@ -71,16 +79,19 @@ bool Dataset::readInData(string fileName) {
 
         if (count < 1115) {
             occupationMap.insert({data[2], data[3]});
-            industryMap.insert({data[4], data[5]});
-            cout << data[4] << endl;
         }
 
-        int edu = 0;
+        if (industryMap.find(data[4]) == industryMap.end())
+        {
+            industryMap.insert({data[4], data[5]});
+        }
+
+        int edu = 0, work = 0;
         if (educationMap.find(data.at(24)) != educationMap.end())
             edu = educationMap[data[24]];
-
+        work = workExpMap[data[25]];
         
-        addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, 0);
+        addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, work);
     }
     
     if (!myfile.eof())

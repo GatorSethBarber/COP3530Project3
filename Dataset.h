@@ -11,6 +11,7 @@ class Dataset {
     map<string, string> occupationMap;
     map<string, string> industryMap;
     map<string, int> educationMap;
+    map<string, int> workExpMap;
 
     // Helpers associated with the big three
     void CopySet(const Dataset& other);
