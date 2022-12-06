@@ -1,7 +1,8 @@
+// Citations for how to set up server:
 // https://www.codecademy.com/courses/learn-node-js/lessons/setting-up-a-server-with-http/exercises/http-review
 // https://nodejs.org/en/docs/guides/getting-started-guide/
-
 // Heavily influenced by https://www.youtube.com/watch?v=3ZAKY-CDKog
+
 const http = require('http');
 const path = require('path');
 const fs = require('fs');
@@ -48,32 +49,46 @@ const serveFile = async (filePath, contentType, response, status = 200) => {
     }
 }
 
+/**
+ * Handle a query of the data
+ * @param {*} req The request
+ * @param {*} res The response
+ * @returns None
+ */
 const handleQuery = (req, res) => {
     baseURL = req.url.split('?')[0];
     queryString = req.url.split('?')[1];
 
+    // Write header to the response
     res.writeHead(200, {'Content-Type': 'application/json'});
 
+    // Get the needed fields from the query.
     let splitQuery = new URLSearchParams(queryString);
-    
     const salary = splitQuery.get('salary');
     const education = splitQuery.get('education');
     const experience = splitQuery.get('experience');
     const jobGrowth = splitQuery.get('jobGrowth');
     const useSort = splitQuery.get('useSort');
     
+    // Use promises to get the data.
     datasetPromise().then(({Dataset}) => {
+        // Create a dataset object (subset of Dataset in Dataset.h)
         let dataset = new Dataset();
+
+        // Read in the data
         let success = dataset.readInData('../dataForProject.csv')
-        dataset.rankAll(parseInt(salary), parseInt(jobGrowth), parseInt(education), parseInt(experience));
         console.log(success);
+        // Rank
+        dataset.rankAll(parseInt(salary), parseInt(jobGrowth), parseInt(education), parseInt(experience));
+        
+        // Perform appropriate sort
         if (useSort == '0')
             dataset.mergeSort();
         else
             dataset.quickSort();
         
+        // Send results back to user.
         let results = dataset.getLastN(10);
-        // console.log(results);
         let returnResults = [];
         for (let i = 0; i < results.size(); i++) {
             let temp = []
@@ -89,7 +104,7 @@ const handleQuery = (req, res) => {
 }
 
 
-
+// Create a server
 const server = http.createServer((req, res) => {
     // For right now, assume only get methods are being passed
     console.log(req.url, req.method);
@@ -99,9 +114,8 @@ const server = http.createServer((req, res) => {
         return handleQuery(req, res);
     }
     
+    // Otherwise, serve the appropriate file
     const extension = path.extname(req.url);
-
-    // Todo: First, check if query; Otherwise, run this stuff
     let contentType;
     switch(extension) {
         case '.css':
@@ -166,30 +180,3 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 })
-
-// const datasetPromise = require('./testing.js')
-// let dataset;
-// datasetPromise().then(({Dataset}) => {
-//     let dataset = new Dataset();
-//     let data = dataset.readInData('../dataForProject.csv')
-//     console.log(data);
-//     dataset.quickSort();
-//     let results = dataset.getLastN(10);
-//     console.log(results);
-//     for (let i = 0; i < results.size(); i++) {
-//         console.log("In results");
-//         for (let j = 0; j < results.get(i).size(); j++) {
-//             console.log(`${results.get(i).get(j)}`);
-//         }
-//     }
-// })
-
-
-// async function getData() {
-//     if (dataset === undefined) {
-//         let dataset = await datasetPromise();
-//     }
-//     return dataset;
-// }
-
-// getData().then(console.log);
