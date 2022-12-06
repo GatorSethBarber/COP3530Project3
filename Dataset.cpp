@@ -225,6 +225,7 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
         Datapoint curr = *jobTypes[i];
         double eduRanking = 0, salaryRanking = 0, jobGrowthRanking = 0, 
         workExpRanking = 0;
+
         if (jobTypes[i]->avgSalary < minSalary)
         {
             salaryRanking = (1.0 / jobTypes[i]->avgSalary) * -5.0;
@@ -238,7 +239,9 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
             salaryRanking = jobTypes[i]->avgSalary * 10;
         }
         salaryRanking /= 1000.0;
+
         jobGrowthRanking = curr.projJobGrowth * jobGrowth;
+
         if (jobTypes[i]->education == edu)
         {
             eduRanking = 10;
@@ -251,7 +254,19 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
         {
             eduRanking = 1;
         }
-        jobTypes[i]->ranking = salaryRanking + jobGrowthRanking + eduRanking;
+        if (jobTypes[i]->workExperience == workExp)
+        {
+            workExpRanking = 10;
+        }
+        else if (jobTypes[i]->workExperience < workExp)
+        {
+            workExpRanking = 5;
+        }
+        else
+        {
+            workExpRanking = 0;
+        }
+        jobTypes[i]->ranking = salaryRanking + jobGrowthRanking + eduRanking + workExpRanking;
 
     }
 }
