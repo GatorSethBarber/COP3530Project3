@@ -7,7 +7,11 @@ using namespace std;
 Dataset::Dataset() : jobTypes() {}
 
 /*====================== The Big Three ===================*/
-// Helpers
+// Helpers for te big three
+/**
+ * Copies the actual data in jobTypes from another dataset.
+ * @param other The other dataset
+ */
 void Dataset::CopySet(const Dataset& other) {
     // Need to make copies of each and add in pointer to new data
     ClearData();
@@ -19,6 +23,9 @@ void Dataset::CopySet(const Dataset& other) {
     }
 }
 
+/**
+ * The the data currently in the dataset.
+ */
 void Dataset::ClearData() {
     for (int i = 0; i < jobTypes.size(); i++)
         delete jobTypes[i];
@@ -28,11 +35,18 @@ void Dataset::ClearData() {
 
 // The Big Three
 
+/**
+ * Copy constructor for the dataset.
+ * @param other The dataset to copy from
+*/
 Dataset::Dataset(const Dataset& other) : jobTypes() {
     CopySet(other);
 }
 
-
+/**
+ * The copy assignment operator
+ * @param other The other dataset to copy from
+ */
 Dataset& Dataset::operator=(const Dataset& other) {
     if (&other != this)
         CopySet(other);
@@ -40,7 +54,9 @@ Dataset& Dataset::operator=(const Dataset& other) {
     return *this;
 }
 
-
+/**
+ * The destructor
+ */
 Dataset::~Dataset() {
     ClearData();
 }
@@ -49,6 +65,15 @@ Dataset::~Dataset() {
 /*============================= Accessors and Manipulators ==========================*/
 // Add in data (will need to modify this with Datapoint.h)
 
+/**
+ * Add in a data point to the dataset.
+ * @param SOC The occupation code
+ * @param NAICS The industry code
+ * @param averageSalary The average salary
+ * @param projectedGrowth The projected growth
+ * @param edu The minimum education level
+ * @param work The work experience needed
+ */
 void Dataset::addDatapoint(string SOC, string NAICS, double averageSalary, double projectedGrowth, int edu,
 int work)
 {
@@ -57,18 +82,33 @@ int work)
 
 }
 
+/**
+ * Get a reference to the jobTypes vector, which stores the data.
+ * @return A non-constant reference
+*/
 vector<Datapoint*>& Dataset::getJobTypes()
 {
     return jobTypes;
 }
 
+/**
+ * Get a non-constant reference to the occupation map.
+ * @return A non-constant reference
+ */
 map<string, string>& Dataset::getOccupations()
 {
     return occupationMap;
 }
 
 
-// May need to add in function pointer or use weights
+/**
+ * Rank all the datapoints in the dataset according to closeness
+ * to certain values
+ * @param salaryRange Specifier for the target salary range (0 to 5)
+ * @param jobGrowth The importance placed on job growth
+ * @param edu The minimum education level
+ * @param workExp The needed work experience
+*/
 void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
     
     map<int, pair<int, int>> salaryRanges;
@@ -120,8 +160,14 @@ void Dataset::rankAll(int salaryRange, int jobGrowth, int edu, int workExp) {
 }
 
 /*================== Merge Sort =======================*/
-// Private helper functions that actually perform the sort
+/**
+ * Private helper function that performs the main part of
+ * merge sort.
+ * @param startIndex The starting index for the merge sort
+ * @param endIndex The ending index for the merge sort
+ */
 void Dataset::mergeSortDivide(int startIndex, int endIndex) {
+    // Formerly, mergeSort the same except had if(startIndex >= endIndex)
     if ((endIndex - startIndex) < 2)
         return;
 
@@ -134,6 +180,12 @@ void Dataset::mergeSortDivide(int startIndex, int endIndex) {
 }
 
 // todo: Check the indices out to make sure no conflicts exist (i.e., off by one errors)
+/**
+ * Works with mergeSortDivide. Merges the two parts of an array
+ * @param left The beginning of the first subarray to merge
+ * @param mid The beginning of the second subarray to merge
+ * @param right The end of the second subarray
+ */
 void Dataset::mergeSortMerge(int left, int mid, int right) {
     int n1 = mid - left + 1;
 	int n2 = right - mid;
@@ -204,18 +256,18 @@ void Dataset::mergeSortMerge(int left, int mid, int right) {
     */
 }
 
-void Dataset::mergeSort(int startIndex, int endIndex) {
-    if (startIndex >= endIndex)
-        return;
-
-    // Otherwise, split the left and right and merge
-    int midIndex = (startIndex + endIndex) / 2;
-    mergeSort(startIndex, midIndex);
-    mergeSort(midIndex + 1, endIndex);
-    //cout << startIndex << " " << midIndex << " " << endIndex << endl;
-    mergeSortMerge(startIndex, midIndex, endIndex);
+/**
+ * Wrapper function to perform a merge sort
+ */
+void Dataset::mergeSort() {
+    mergeSortDivide(0, jobTypes.size() - 1);
 }
 
+/**
+ * Recursively perform quick sort.
+ * @param start The start index
+ * @param end The end index (must be an actual index)
+ */
 void Dataset::quickSortRecursive(int start, int end) {
     
     // Base case: if length is 0 or 1, return
@@ -266,6 +318,9 @@ void Dataset::quickSortRecursive(int start, int end) {
 
 }
 
+/**
+ * Forward facing function for calling QuickSort
+*/
 void Dataset::quickSort() {
     // Doing quicksort for the entire list
     // Use middle element as pivot

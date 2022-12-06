@@ -47,16 +47,20 @@
         <div class="row">
             <div class="col-4">
                 <form class="rounded border border-dark p-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" id="datasetSwitch">
+                        <label class="form-check-label" for="datasetSwitch">Use alternate sort?</label>
+                    </div>
                     <div class="mb-3">
                         <label for="inputSalary" class="form-label">Salary Range</label>
-                        <select class="form-select" name="inputSalary">
+                        <select class="form-select" name="inputSalary" id="inputSalary">
                             <option selected disabled value="">Choose a slary range</option>
-                            <option value="20">Below $20,000</option>
-                            <option value="40">$20,000-$40,000</option>
-                            <option value="80">$40,000-$80,000</option>
-                            <option value="100">$80,000-$100,000</option>
-                            <option value="150">$100,000-$150,000</option>
-                            <option value="151">Above $150,000</option>
+                            <option value="0">Below $20,000</option>
+                            <option value="1">$20,000-$40,000</option>
+                            <option value="2">$40,000-$80,000</option>
+                            <option value="3">$80,000-$100,000</option>
+                            <option value="4">$100,000-$150,000</option>
+                            <option value="5">Above $150,000</option>
                           </select>
                     </div>
                     <div class="mb-3">
@@ -75,7 +79,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="inputEducation" class="form-label">Education Level</label>
-                        <select class="form-select" name="inputEducation">
+                        <select class="form-select" name="inputEducation" id="inputEducation">
                             <option selected disabled value="">Choose an education level</option>
                             <option value="none">No high-school diploma</option>
                             <option value="diploma">High-school diploma</option>
@@ -89,7 +93,7 @@
                         <label for="inputExperience" class="form-label">Years of Work Experience</label>
                         <input type="number" class="form-control" id="inputExperience" min="0" step="1">
                       </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" onclick="submitQuestionnaire()">Submit</button>
                   </form>
             </div>
             <div class="col-8">
@@ -102,7 +106,7 @@
                             <th scope="col">Work Experience</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tableBody">
                         <tr></tr>
                     </tbody>
                 </table>
@@ -119,6 +123,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
         crossorigin="anonymous"></script>
+    <script src="javascript/questionnaire.js"></script>
 </body>
 
 </html>
