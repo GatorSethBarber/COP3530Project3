@@ -17,6 +17,13 @@ Dataset::Dataset() : jobTypes(), occupationMap() {
     educationMap.insert({"Bachelor's degree", 5});
     educationMap.insert({"Master's degree", 6});
     educationMap.insert({"Doctoral or professional degree", 7});
+
+    workExpMap =
+    {
+        {"None", 0},
+        {"Less than 5 years", 1},
+        {"5 years or more", 2},
+    };
 }
 
 /**
@@ -60,6 +67,7 @@ bool Dataset::readInData(string fileName) {
                     getline(s_stream, substr2, ',');
                     substr += substr2;
                 }         
+                substr = substr.substr(1, substr.length()-2); 
             }
             data.push_back(substr);
         }
@@ -74,12 +82,17 @@ bool Dataset::readInData(string fileName) {
             occupationMap.insert({data[2], data[3]});
         }
 
-        int edu = 0;
+        if (industryMap.find(data[4]) == industryMap.end())
+        {
+            industryMap.insert({data[4], data[5]});
+        }
+
+        int edu = 0, work = 0;
         if (educationMap.find(data.at(24)) != educationMap.end())
             edu = educationMap[data[24]];
-
+        work = workExpMap[data[25]];
         
-        addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, 0);
+        addDatapoint(soc, data[4], stod(data[14]), stod(data[13]), edu, work);
     }
     
     if (!myfile.eof())
@@ -183,12 +196,22 @@ map<string, string>& Dataset::getOccupations()
     return occupationMap;
 }
 
+/**
+ * Get a non-constant reference to the industry map.
+ * @return A non-constant reference
+ */
+map<string, string>& Dataset::getIndustries()
+{
+    return industryMap;
+}
+
 
 vector<vector<string>> Dataset::getLastN(int n) {
     vector<vector<string>> returnVector;
     for (int i = jobTypes.size() - 1; i >= 0 && n > 0; i--) {
         vector<string> temp;
         temp.push_back(occupationMap[jobTypes[i]->occupationCode]);
+        temp.push_back(industryMap[jobTypes[i]->industryNAICS]);
         temp.push_back(to_string(jobTypes[i]->avgSalary));
         temp.push_back(to_string(jobTypes[i]->projJobGrowth));
         temp.push_back(to_string(jobTypes[i]->education));
@@ -288,7 +311,7 @@ void Dataset::mergeSortDivide(int startIndex, int endIndex) {
     int midIndex = (startIndex + startIndex) / 2;
     mergeSortDivide(startIndex, midIndex);
     mergeSortDivide(midIndex + 1, endIndex);
-    cout << startIndex << " " << midIndex << " " << endIndex << endl;
+    
     mergeSortMerge(startIndex, midIndex, endIndex);
 }
 

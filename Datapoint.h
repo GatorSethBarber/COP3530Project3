@@ -21,7 +21,7 @@ struct Datapoint {
 
     // The default big three will be satisfactory
 
-    void print(map<string, string> occupations);
+    void print(map<string, string> occupations, map<string, string> industries);
 
     bool operator<(const Datapoint& other);
 

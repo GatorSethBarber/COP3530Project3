@@ -41,9 +41,9 @@ Datapoint::Datapoint(string SOC, string NAICS, double averageSalary, double proj
 /**
  * Print some information associated with the Datapoint
 */
-void Datapoint::print(map<string, string> occupations)
+void Datapoint::print(map<string, string> occupations, map<string, string> industries)
 {
-    cout << occupations[occupationCode] << " " << industryNAICS << endl;
+    cout << occupations[occupationCode] << " " << industries[industryNAICS] << endl;
 }
 
 // The operators compare the rankings of the Datapoints
