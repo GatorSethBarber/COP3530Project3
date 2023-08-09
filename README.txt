@@ -17,6 +17,7 @@ Inilining limit inspired by: https://github.com/emscripten-core/emscripten/issue
 
 Update 8/9/2023:
 Additional sources used:
+https://emscripten.org/docs/porting/files/packaging_files.html#packaging-files: including external files
 https://medium.com/netscape/javascript-c-modern-ways-to-use-c-in-javascript-projects-a19003c5a9ff
 https://medium.com/jspoint/a-simple-guide-to-load-c-c-code-into-node-js-javascript-applications-3fcccf54fd32
 https://blog.esciencecenter.nl/using-c-in-a-web-app-with-webassembly-efd78c08469: for main compilation statement
