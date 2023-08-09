@@ -13,3 +13,10 @@ Sources
 Main compilation statement: https://emscripten.org/docs/porting/connecting_cpp_and_javascript/embind.html
 --bind option: https://emscripten.org/docs/porting/files/file_systems_overview.html
 Inilining limit inspired by: https://github.com/emscripten-core/emscripten/issues/5316 (uses outlining)
+
+
+Update 8/9/2023:
+Additional sources used:
+https://medium.com/netscape/javascript-c-modern-ways-to-use-c-in-javascript-projects-a19003c5a9ff
+https://medium.com/jspoint/a-simple-guide-to-load-c-c-code-into-node-js-javascript-applications-3fcccf54fd32
+https://blog.esciencecenter.nl/using-c-in-a-web-app-with-webassembly-efd78c08469: for main compilation statement
